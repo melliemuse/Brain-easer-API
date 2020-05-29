@@ -1,6 +1,6 @@
 from django.db import models
 
-class Interventions(models.Model):
+class Intervention(models.Model):
     name = models.CharField(max_length=150)
     timestamp = models.DateTimeField(auto_now=True, auto_now_add=False)
     completed = models.BooleanField()

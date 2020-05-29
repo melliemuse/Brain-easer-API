@@ -17,12 +17,17 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
+from django.contrib.auth.models import User
+from django.contrib import admin
+from braineaserAPI.views import Clients
 
 router = routers.DefaultRouter(trailing_slash=False)
+router.register(r'clients', Clients, 'client')
 
 urlpatterns = [
     path('', include(router.urls)),
     path('api-token-auth/', obtain_auth_token),
+    #  path('login', login_user),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
