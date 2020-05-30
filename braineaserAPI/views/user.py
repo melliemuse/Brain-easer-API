@@ -23,6 +23,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     fields = ('id', 'first_name', 'last_name', 'email')
 
 class Users(ViewSet):
+
     def retrieve(self, request, pk=None):
         """
         Handles GET requests for single User
@@ -40,7 +41,7 @@ class Users(ViewSet):
 
     def list(self, request):
         """
-        Handles GET request to Users resource 
+        Handles GET request to Users resource
 
         Returns:
             Response -- JSON serialized list of users
