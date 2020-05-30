@@ -21,6 +21,8 @@ class ClientSerializer(serializers.HyperlinkedModelSerializer):
         )
         fields = ('id', 'user', 'inner_child_image')
 
+        depth = 1
+
 
 class Clients(ViewSet):
 

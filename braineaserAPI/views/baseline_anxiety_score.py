@@ -29,10 +29,10 @@ class BaselineAnxietyScores(ViewSet):
             Response -- JSON serialized Baseline Anxiety Score Instance
         """
 
-    try:
-        baseline_score = BaselineAnxietyScore.objects.get(pk=pk)
-        serializer = BaselineAnxietyScoreSerializer(baseline_score, context={'request': request})
-        return Response(serializer.data)
-        
-    except Exception as ex:
-        return HttpResponseServerError(ex)
+        try:
+            baseline_score = BaselineAnxietyScore.objects.get(pk=pk)
+            serializer = BaselineAnxietyScoreSerializer(baseline_score, context={'request': request})
+            return Response(serializer.data)
+            
+        except Exception as ex:
+            return HttpResponseServerError(ex)
