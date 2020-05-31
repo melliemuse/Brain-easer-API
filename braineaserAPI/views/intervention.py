@@ -36,3 +36,15 @@ class Interventions(ViewSet):
             
         except Exception as ex:
             return HttpResponseServerError(ex)
+    def list(self, request):
+        """
+        Handles GET request for Intervention
+
+        Returns:
+            Response -- JSON of serialized Intervention list
+        """
+
+        intervention = Intervention.objects.all()
+
+        serializer = InterventionSerializer(intervention, many=True, context={'request': request})
+        return Response(serializer.data)
