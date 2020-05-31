@@ -5,12 +5,13 @@ from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 from django.contrib.auth.models import User
 from django.contrib import admin
-from braineaserAPI.views import Clients, Users, register_user, login_user, Interventions, BaselineAnxietyScores
+from braineaserAPI.views import Clients, Users, register_user, login_user, Interventions, BaselineAnxietyScores, UserInterventions
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'clients', Clients, 'client')
 router.register(r'users', Users, 'user')
 router.register(r'interventions', Interventions, 'intervention')
+router.register(r'user_interventions', UserInterventions, 'user_intervention')
 router.register(r'baselineAnxietyScores', BaselineAnxietyScores, 'baselineAnxietyScore')
 
 urlpatterns = [
