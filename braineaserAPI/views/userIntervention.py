@@ -18,7 +18,7 @@ class UserInterventionSerializer(serializers.HyperlinkedModelSerializer):
             view_name='user_intervention',
             lookup_field='id'
         )
-        fields = ('id', 'name', 'timestamp', 'description', 'instructions', 'detailed_info')
+        fields = ('id','timestamp', 'anxiety_score', 'intervention_id', 'client_id')
 
 class UserInterventions(ViewSet):
     def retrieve(self, request, pk=None):
@@ -56,10 +56,10 @@ class UserInterventions(ViewSet):
         Returns:
             Response -- JSON serialized User Intervention Instance
         """
-
+        current_user = request.auth.user.client.id
         user_intervention = UserIntervention()
 
-        user_intervention.client = request.auth.user.client.id
+        user_intervention.client = current_user
         user_intervention.intervention = request.data['intervention']
         user_intervention.anxiety_score = request.data['anxiety_score']
 
