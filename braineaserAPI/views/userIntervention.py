@@ -19,6 +19,7 @@ class UserInterventionSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field='id'
         )
         fields = ('id','timestamp', 'anxiety_score', 'intervention', 'client')
+        depth = 1
 
 class UserInterventions(ViewSet):
     def retrieve(self, request, pk=None):
@@ -46,9 +47,6 @@ class UserInterventions(ViewSet):
 
         user_intervention = UserIntervention.objects.all()
         user = self.request.query_params.get('user', None)
-        # if username is not None:
-        #     queryset = queryset.filter(purchaser__username=username)
-        # return queryset
         
 
         if user is not None:
