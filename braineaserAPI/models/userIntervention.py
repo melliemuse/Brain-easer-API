@@ -6,3 +6,4 @@ class UserIntervention(models.Model):
     intervention = models.ForeignKey(Intervention, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     anxiety_score = models.IntegerField()
+    description = models.CharField( max_length=150)

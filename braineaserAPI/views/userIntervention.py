@@ -18,7 +18,7 @@ class UserInterventionSerializer(serializers.HyperlinkedModelSerializer):
             view_name='user_intervention',
             lookup_field='id'
         )
-        fields = ('id','timestamp', 'anxiety_score', 'intervention', 'client')
+        fields = ('id','timestamp', 'anxiety_score', 'intervention', 'client', 'description')
         depth = 1
 
 class UserInterventions(ViewSet):
@@ -76,6 +76,7 @@ class UserInterventions(ViewSet):
         user_intervention.client_id = client.id
         user_intervention.intervention_id = request.data['intervention']
         user_intervention.anxiety_score = request.data['anxiety_score']
+        user_intervention.description = request.data['description']
 
         user_intervention.save()
 
