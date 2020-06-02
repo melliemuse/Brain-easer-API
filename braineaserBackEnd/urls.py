@@ -12,7 +12,7 @@ router.register(r'clients', Clients, 'client')
 router.register(r'users', Users, 'user')
 router.register(r'interventions', Interventions, 'intervention')
 router.register(r'user_interventions', UserInterventions, 'user_intervention')
-router.register(r'baselineAnxietyScores', BaselineAnxietyScores, 'baselineAnxietyScore')
+router.register(r'baseline', BaselineAnxietyScores, 'baselineAnxietyScore')
 
 urlpatterns = [
     path('', include(router.urls)),
