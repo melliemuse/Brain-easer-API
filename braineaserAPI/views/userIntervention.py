@@ -43,12 +43,16 @@ class UserInterventions(ViewSet):
         Returns:
             Response -- JSON of serialized userIntervention list
         """
+
+        user_intervention = UserIntervention.objects.all()
+        user = self.request.query_params.get('user', None)
+        # if username is not None:
+        #     queryset = queryset.filter(purchaser__username=username)
+        # return queryset
         
-        user = self.request.auth.user.client.id
 
-        if user:
-            user_intervention = UserIntervention.objects.filter(client__id=user)
-
+        if user is not None:
+            user_intervention = UserIntervention.objects.filter(client=request.auth.user.client.id)
             serializer = UserInterventionSerializer(user_intervention, many=True, context={'request': request})
             return Response(serializer.data)
 
