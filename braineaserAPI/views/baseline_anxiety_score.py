@@ -3,7 +3,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from braineaserAPI.models import BaselineAnxietyScore
+from braineaserAPI.models import BaselineAnxietyScore, Client
 
 class BaselineAnxietyScoreSerializer(serializers.HyperlinkedModelSerializer):
     """
@@ -58,3 +58,24 @@ class BaselineAnxietyScores(ViewSet):
             baseline_score = BaselineAnxietyScore.objects.all()
             serializer = BaselineAnxietyScoreSerializer(baseline_score, many=True, context={'request': request})
             return Response(serializer.data)
+
+    def create(self, request):
+        """
+        Handle POST request for Baseline Anxiety
+
+        Returns:
+            Response -- JSON serialized Baseline Anxiety Instance
+        """
+        current_user = request.auth.user.client.id
+        client = Client()
+        baseline_score = BaselineAnxietyScore()
+
+        client.id = current_user
+        baseline_score.client_id = client.id
+        baseline_score.anxiety_score = request.data['anxiety_score']
+        baseline_score.description = request.data['description']
+
+        baseline_score.save()
+
+        serializer = BaselineAnxietyScoreSerializer(baseline_score, context={'request': request})
+        return Response(serializer.data)
