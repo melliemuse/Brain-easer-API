@@ -18,7 +18,7 @@ class UserInterventionSerializer(serializers.HyperlinkedModelSerializer):
             view_name='user_intervention',
             lookup_field='id'
         )
-        fields = ('id','timestamp', 'anxiety_score', 'intervention_id', 'client_id')
+        fields = ('id','timestamp', 'anxiety_score', 'intervention', 'client')
 
 class UserInterventions(ViewSet):
     def retrieve(self, request, pk=None):
@@ -28,7 +28,7 @@ class UserInterventions(ViewSet):
         Returns:
             Response -- JSON serialized UserIntervention Instance
         """
-
+        
         try:
             user_intervention = UserIntervention.objects.get(pk=pk)
             serializer = UserInterventionSerializer(user_intervention, context={'request': request})
@@ -43,11 +43,21 @@ class UserInterventions(ViewSet):
         Returns:
             Response -- JSON of serialized userIntervention list
         """
+        
+        user = self.request.auth.user.client.id
 
-        user_intervention = UserIntervention.objects.all()
+        if user:
+            user_intervention = UserIntervention.objects.filter(client__id=user)
 
-        serializer = UserInterventionSerializer(user_intervention, many=True, context={'request': request})
-        return Response(serializer.data)
+            serializer = UserInterventionSerializer(user_intervention, many=True, context={'request': request})
+            return Response(serializer.data)
+
+        else:
+            user_intervention = UserIntervention.objects.all()
+            serializer = UserInterventionSerializer(user_intervention, many=True, context={'request': request})
+            return Response(serializer.data)
+
+
 
     def create(self, request):
         """
@@ -57,10 +67,12 @@ class UserInterventions(ViewSet):
             Response -- JSON serialized User Intervention Instance
         """
         current_user = request.auth.user.client.id
+        client = Client()
         user_intervention = UserIntervention()
 
-        user_intervention.client = current_user
-        user_intervention.intervention = request.data['intervention']
+        client.id = current_user
+        user_intervention.client_id = client.id
+        user_intervention.intervention_id = request.data['intervention']
         user_intervention.anxiety_score = request.data['anxiety_score']
 
         user_intervention.save()

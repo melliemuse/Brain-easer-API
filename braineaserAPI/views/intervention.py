@@ -18,7 +18,7 @@ class InterventionSerializer(serializers.HyperlinkedModelSerializer):
             view_name='intervention',
             lookup_field='id'
         )
-        fields = ('id', 'name', 'timestamp', 'description', 'instructions', 'detailed_info')
+        fields = ('id', 'name', 'description', 'instructions', 'detailed_info')
 
 class Interventions(ViewSet):
     def retrieve(self, request, pk=None):
