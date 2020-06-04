@@ -19,9 +19,9 @@ class ClientSerializer(serializers.HyperlinkedModelSerializer):
             view_name='clients',
             lookup_field='id'
         )
-        fields = ('id', 'user', 'inner_child_image')
-
+        fields = ('id', "user", 'inner_child_image')
         depth = 1
+
 
 
 class Clients(ViewSet):
@@ -51,11 +51,18 @@ class Clients(ViewSet):
             Response -- JSON of serialized Client list
         """
 
-        # current_client=request.query_params.get('self', False)
+        client = Client.objects.all()
+        user = self.request.query_params.get('user', None)
+        print(request.auth.user.client.id)
 
-        client=Client.objects.all()
+        if user is not None:
+            client = Client.objects.filter(id = request.auth.user.client.id)
+            serializer = ClientSerializer(
+            client, many=True, context={'request': request})
+        else:
+            client = Client.objects.all()
+            serializer = ClientSerializer(
+            client, many=True, context={'request': request})
 
-        serializer = ClientSerializer(
-        client, many=True, context={'request': request})
 
         return Response(serializer.data)
