@@ -82,3 +82,22 @@ class UserInterventions(ViewSet):
 
         serializer = UserInterventionSerializer(user_intervention, context={'request': request})
         return Response(serializer.data)
+
+    def update(self, request, pk=None):
+        """
+        Handles PUT requests for individual User Intervention item
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+
+        user_intervention = UserIntervention.objects.get(pk=pk)
+        intervention = Intervention.objects.get(id=request.data["intervention"])
+
+        user_intervention.anxiety_score = request.data["anxiety_score"]
+        user_intervention.intervention = intervention
+        user_intervention.description = request.data["description"]
+
+        user_intervention.save()
+
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
