@@ -3,7 +3,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from braineaserAPI.models import Journal
+from braineaserAPI.models import Journal, Client, Prompt
 
 class JournalSerializer(serializers.HyperlinkedModelSerializer):
     """
@@ -56,5 +56,28 @@ class Journals(ViewSet):
             journal = Journal.objects.all()
             serializer = JournalSerializer(journal, many=True, context={'request': request})
             return Response(serializer.data)
-        
+    
+    def create(self, request):
+        """
+        Handles POST request for Journal
 
+        Returns:
+            Response JSON serialized Journal instance
+        """
+
+        current_user = request.auth.user.client.id
+        client = Client()
+        prompt = Prompt()
+        journal = Journal()
+
+        client.id = current_user
+        prompt.id = request.data['prompt']
+        journal.client_id = client.id
+        journal.entry = request.data['entry']
+        journal.prompt = prompt
+
+        journal.save()
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+    
