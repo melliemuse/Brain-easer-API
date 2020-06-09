@@ -18,7 +18,7 @@ class UserInterventionSerializer(serializers.HyperlinkedModelSerializer):
             view_name='user_intervention',
             lookup_field='id'
         )
-        fields = ('id','timestamp', 'anxiety_score', 'intervention', 'client', 'description')
+        fields = ('id', 'timestamp', 'anxiety_score', 'intervention', 'client', 'description')
         depth = 1
 
 class UserInterventions(ViewSet):
@@ -89,13 +89,14 @@ class UserInterventions(ViewSet):
         Returns:
             Response -- Empty body with 204 status code
         """
-
+        # current_user = request.auth.user.client.id
         user_intervention = UserIntervention.objects.get(pk=pk)
         intervention = Intervention.objects.get(id=request.data["intervention"])
 
         user_intervention.anxiety_score = request.data["anxiety_score"]
         user_intervention.intervention = intervention
         user_intervention.description = request.data["description"]
+        # user_intervention.client_id = current_user
 
         user_intervention.save()
 
