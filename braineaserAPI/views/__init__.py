@@ -5,3 +5,4 @@ from .register import register_user
 from .register import login_user
 from .intervention import Interventions
 from .userIntervention import UserInterventions
+from .prompt import Prompts
