@@ -80,4 +80,20 @@ class Journals(ViewSet):
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
-    
+    def update(self, request, pk=None):
+        """
+        Handles PUT requests for Journal
+
+        Returns:
+            Response Empty body with 204 status code
+        """
+
+        journal = Journal.objects.get(pk=pk)
+        prompt = Prompt.objects.get(id=request.data['prompt'])
+
+        journal.entry = request.data["entry"]
+        journal.prompt = prompt
+
+        journal.save()
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
