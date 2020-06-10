@@ -97,3 +97,22 @@ class Journals(ViewSet):
         journal.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+    def destroy(self, request, pk=None):
+        """
+        Handles DELETE request for Journal
+
+        Returns:
+            Response empty body with 204 status code
+        """
+
+        try: 
+            journal = Journal.objects.get(pk=pk)
+            journal.delete()
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except Journal.DoesNotExist as ex:
+            return Response({'journal': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({'journal': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
