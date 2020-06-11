@@ -18,7 +18,7 @@ class JournalSerializer(serializers.HyperlinkedModelSerializer):
             view_name="journal",
             lookup_field="id"
         )
-        fields = ('id', 'client', 'prompt', 'entry')
+        fields = ('id', 'client', 'prompt', 'entry', 'timestamp')
         depth = 1
 
 class Journals(ViewSet):
